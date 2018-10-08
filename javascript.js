@@ -1,80 +1,45 @@
-let usermovie; 
-
 const getFilm = function (searchText) {
 	let request = new XMLHttpRequest();
 	request.open('GET',`http://www.omdbapi.com/?t=${searchText}&apikey=384c433a`, false);
 	request.send(null);
-
-	console.log(request.responseText);
-
 	let jsonObject = JSON.parse(request.responseText);
 	return jsonObject;
-}
-
-
-
-const getPoster = function(searchText){
-    let request = new XMLHttpRequest();
-
-	request.open('GET',`http://img.omdbapi.com/?t=${searchText}&apikey=384c433a`, false);
-	request.send(null);
-
-	console.log(request.responseText);
-
-	let jsonObject = JSON.parse(request.responseText);
-	return jsonObject;
-    
 }
 
 const button = document.getElementById('button');
-
-const usertitle = document.getElementsByClassName('title')[0];
-const usersynopsis = document.getElementsByClassName('synopsis')[0];
-const userposter = document.getElementsByClassName('poster')[0];
-
-
-
+const userTitle = document.getElementsByClassName('title')[0];
+const userSynopsis = document.getElementsByClassName('synopsis')[0];
+const userPoster = document.getElementsByClassName('poster')[0];
 
 button.addEventListener('click', function(event) {
     
-    usermovie = document.getElementById('title').value;
+    let userMovie = document.getElementById('title').value;
 	
-	let a = getFilm(usermovie);
-//	console.log(a.Title);
-//  console.log(a.Plot);
+	let filmData = getFilm(userMovie);
     
-//    usertitle.innerHTML = ('> >   ' + a.Title +'   < <');
-//    usertitle.innerHTML = ('   ' + a.Title +'   ');
-    usertitle.innerHTML = (a.Title);
-    usersynopsis.innerHTML = (a.Plot);
-    
-    if (a.Title == null) {
-        usertitle.innerHTML = (`There is no such a film as ${a.Title}`);    
+    if (filmData.Title == null) {
+        userTitle.innerHTML = `There is no such a film as ${filmData.Title}`;    
     } else {
-         usertitle.innerHTML = (a.Title);    
+        userTitle.innerHTML = filmData.Title;    
     }
     
-    if (a.Plot == null) {
-        usersynopsis.innerHTML = ('no plot to display');    
+    if (filmData.Plot == null || filmData.Plot == 'N/A') {
+        userSynopsis.innerHTML = 'no plot to display';    
     } else {
-        usersynopsis.innerHTML = (a.Plot);    
-   
+        userSynopsis.innerHTML = filmData.Plot;    
     }
             
-    
-    if (a.Poster == null) {
-        userposter.innerHTML = ('no poster to ');    
+
+    if (filmData.Poster == null || filmData.Poster == 'N/A') {
+        userPoster.innerHTML = 'no poster to display';    
     } else {
-        userposter.innerHTML = (`<img src="${a.Poster}" alt="${a.Title} poster" >`);    
+        userPoster.innerHTML = `<img src="${filmData.Poster}" alt="${filmData.Title} poster" >`;    
     }
-       
- 
 });
 
 
 let formElement = document.getElementById('form');
 
 formElement.addEventListener('submit', (e) =>{
-	console.log('gfghf');
 	e.preventDefault();
 });
